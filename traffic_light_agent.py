@@ -14,7 +14,7 @@ class TrafficLightAgent:
         self.last_updated = datetime.now()
 
         # Load trained AI model
-        model_path = os.path.join(os.path.dirname(__file__), "..", "ai_model.pkl")
+        model_path = os.path.join(os.path.dirname(__file__), "ai_model.pkl")
         self.model = joblib.load(model_path)
 
     def receive_event(self, event_type, data=None):
