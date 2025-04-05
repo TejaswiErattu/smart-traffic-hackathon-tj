@@ -1,7 +1,7 @@
 # tests/test_traffic_light_agent.py
 
 import unittest
-from agents.traffic_light_agent import TrafficLightAgent
+from traffic_light_agent import TrafficLightAgent
 
 class TestTrafficLightAgent(unittest.TestCase):
 

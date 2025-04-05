@@ -1,16 +1,21 @@
 # agents/traffic_light_agent.py
 
-import random
 import asyncio
 from datetime import datetime
+import joblib
+import os
 
 class TrafficLightAgent:
     def __init__(self, intersection_id):
         self.id = intersection_id
         self.state = "RED"  # Initial state
-        self.traffic_queue = 0  # Number of vehicles waiting
+        self.traffic_queue = 0
         self.emergency_detected = False
         self.last_updated = datetime.now()
+
+        # Load trained AI model
+        model_path = os.path.join(os.path.dirname(__file__), "..", "ai_model.pkl")
+        self.model = joblib.load(model_path)
 
     def receive_event(self, event_type, data=None):
         if event_type == "TRAFFIC_UPDATE":
@@ -22,20 +27,16 @@ class TrafficLightAgent:
 
     async def process(self):
         while True:
-            await asyncio.sleep(2)  # Simulate decision-making delay
+            await asyncio.sleep(2)
             self.decide_signal()
             self.display_status()
 
     def decide_signal(self):
-        if self.emergency_detected:
-            self.state = "GREEN"
-        elif self.traffic_queue > 10:
-            self.state = "GREEN"
-        elif self.traffic_queue < 3:
-            self.state = "RED"
-        else:
-            self.state = "YELLOW"
+        # Use AI model to decide
+        X = [[self.traffic_queue, int(self.emergency_detected)]]
+        prediction = self.model.predict(X)[0]
 
+        self.state = {0: "RED", 1: "YELLOW", 2: "GREEN"}[prediction]
         self.last_updated = datetime.now()
 
     def display_status(self):

@@ -1,7 +1,7 @@
 # main.py
 
 import asyncio
-from agents.traffic_light_agent import TrafficLightAgent
+from traffic_light_agent import TrafficLightAgent
 
 async def run_simulation():
     # Create agents for 3 intersections
